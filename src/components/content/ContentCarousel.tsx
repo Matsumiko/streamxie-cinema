@@ -85,12 +85,31 @@ export const ContentCarousel = ({
           </div>
         }
       />
-      <div
-        ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scroll-smooth pb-3 hide-scrollbar"
-        style={{ scrollSnapType: "x mandatory" }}
-      >
-        {children}
+      <div className="relative">
+        {canScrollLeft ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-0 z-10 flex w-10 items-center justify-start bg-gradient-to-r from-background via-background/80 to-transparent pl-1 sm:hidden"
+          >
+            <CaretLeft size={14} weight="bold" className="text-foreground/70" />
+          </div>
+        ) : null}
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto scroll-smooth pb-3 hide-scrollbar"
+          style={{ scrollSnapType: "x mandatory" }}
+        >
+          {children}
+        </div>
+        {canScrollRight ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 z-10 flex w-16 items-center justify-end gap-1 bg-gradient-to-l from-background via-background/80 to-transparent pr-1 text-foreground/70 sm:hidden"
+          >
+            <span className="text-[10px] font-medium uppercase tracking-wider">Swipe</span>
+            <CaretRight size={14} weight="bold" />
+          </div>
+        ) : null}
       </div>
     </section>
   );
