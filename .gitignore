@@ -15,8 +15,6 @@ dist-ssr/
 .wrangler
 .wrangler/
 *.local
-playwright-report/
-test-results/
 
 # Local secrets and credentials
 .env

@@ -26,11 +26,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -p tsconfig.app.json --noEmit",
-    "qa:smoke": "playwright test -c playwright.config.mjs",
-    "qa:smoke:install": "playwright install chromium",
-    "qa:smoke:auth": "playwright test -c playwright.config.mjs --grep \"auth \\+ account-state lifecycle\"",
-    "qa:smoke:ui-auth": "playwright test -c playwright.config.mjs --grep \"UI auth journey works\""
+    "typecheck": "tsc -p tsconfig.app.json --noEmit"
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
@@ -72,13 +68,11 @@
     "tailwind-merge": "^1.14.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.0",
     "@vitejs/plugin-react": "4.3.4",
     "esbuild": "0.25.5",
     "globals": "15.12.0",
-    "playwright": "^1.59.1",
     "tailwindcss": "3.4.16",
     "tailwindcss-animate": "1.0.7",
     "typescript": "^6.0.3",
