@@ -48,7 +48,25 @@ export const HomePage = ({
           />
         ) : null}
 
-        {sections.slice(0, 7).map((section) => {
+        {continueWatching.length > 0 ? (
+          <ContentCarousel
+            title="Continue Watching"
+            subtitle="Jump back into the stories you left in motion."
+            viewAllHref="/my-list?tab=continue"
+          >
+            {continueWatching.map((item, index) => (
+              <div
+                key={`cw-${item.id}-${index}`}
+                className="w-[300px] shrink-0 md:w-[400px]"
+                style={{ scrollSnapAlign: "start" }}
+              >
+                <LandscapeCard item={item} progress={progressMap[item.id] ?? 0} />
+              </div>
+            ))}
+          </ContentCarousel>
+        ) : null}
+
+        {sections.slice(0, 6).map((section) => {
           const ranked = /top|trending/i.test(section.title);
 
           return (
@@ -74,31 +92,6 @@ export const HomePage = ({
             </ContentCarousel>
           );
         })}
-
-        {continueWatching.length > 0 ? (
-          <ContentCarousel title="Continue Watching" subtitle="Jump back into the stories you left in motion." viewAllHref="/my-list">
-            {continueWatching.map((item, index) => (
-              <div key={`cw-${item.id}-${index}`} className="w-[300px] shrink-0 md:w-[400px]" style={{ scrollSnapAlign: "start" }}>
-                <LandscapeCard item={item} progress={progressMap[item.id] ?? 0} />
-              </div>
-            ))}
-          </ContentCarousel>
-        ) : null}
-
-        {sections.slice(7).map((section) => (
-          <ContentCarousel
-            key={section.id}
-            title={section.title}
-            subtitle={section.subtitle}
-            viewAllHref={section.viewAllHref}
-          >
-            {section.items.slice(0, 12).map((item, index) => (
-              <div key={`${section.id}-${item.id}-${index}`} className="w-[160px] shrink-0 md:w-[200px]" style={{ scrollSnapAlign: "start" }}>
-                <PosterCard item={item} inList={myList.includes(item.id)} onToggleList={onToggleList} />
-              </div>
-            ))}
-          </ContentCarousel>
-        ))}
       </PageContainer>
     </>
   );

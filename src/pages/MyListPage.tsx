@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
 import { BookmarkSimple, ClockCounterClockwise, Trash } from "@phosphor-icons/react";
+import { motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PosterCard } from "@/components/content/PosterCard";
@@ -19,6 +20,7 @@ type MyListPageProps = {
 };
 
 export const MyListPage = ({ myList, onToggleList, progressMap }: MyListPageProps) => {
+  const [searchParams] = useSearchParams();
   const { items: catalogItems } = useStreamCatalog();
   const [resolvedItems, setResolvedItems] = useState<Record<string, ContentItem>>({});
 
@@ -26,7 +28,9 @@ export const MyListPage = ({ myList, onToggleList, progressMap }: MyListPageProp
     "My List | streamXie",
     "Manage favorites, continue watching, and recent history.",
   );
-  const [tab, setTab] = useState("favorites");
+  const requestedTab = searchParams.get("tab");
+  const initialTab = requestedTab === "continue" || requestedTab === "history" ? requestedTab : "favorites";
+  const [tab, setTab] = useState(initialTab);
 
   const progressData = getWatchProgress();
   const catalogById = useMemo(
