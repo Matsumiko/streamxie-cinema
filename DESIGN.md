@@ -68,7 +68,7 @@ spacing:
 components:
   button-primary:
     backgroundColor: "linear-gradient(135deg, {colors.signal-teal} 0%, {colors.electric-cyan} 100%)"
-    textColor: "#ffffff"
+    textColor: "#0f1115"
     typography: "{typography.body}"
     rounded: "{rounded.lg}"
     padding: "12px 32px"
