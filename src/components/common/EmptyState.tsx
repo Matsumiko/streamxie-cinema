@@ -6,9 +6,10 @@ type EmptyStateProps = {
   description: string;
   actionLabel?: string;
   actionHref?: string;
+  onAction?: () => void;
 };
 
-export const EmptyState = ({ title, description, actionLabel, actionHref }: EmptyStateProps) => {
+export const EmptyState = ({ title, description, actionLabel, actionHref, onAction }: EmptyStateProps) => {
   return (
     <div className="flex min-h-[320px] flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/50 px-8 py-16 text-center">
       <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-border bg-muted text-primary">
@@ -16,14 +17,24 @@ export const EmptyState = ({ title, description, actionLabel, actionHref }: Empt
       </div>
       <h2 className="text-2xl font-medium text-foreground">{title}</h2>
       <p className="mt-3 max-w-md text-sm text-muted-foreground md:text-base">{description}</p>
-      {actionLabel && actionHref && (
-        <Link
-          to={actionHref}
-          className="mt-6 inline-flex min-h-[48px] items-center rounded-xl bg-gradient-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
-        >
-          {actionLabel}
-        </Link>
-      )}
+      {actionLabel && (actionHref || onAction) ? (
+        onAction ? (
+          <button
+            type="button"
+            onClick={onAction}
+            className="mt-6 inline-flex min-h-[48px] items-center rounded-xl bg-gradient-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
+          >
+            {actionLabel}
+          </button>
+        ) : (
+          <Link
+            to={actionHref as string}
+            className="mt-6 inline-flex min-h-[48px] items-center rounded-xl bg-gradient-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
+          >
+            {actionLabel}
+          </Link>
+        )
+      ) : null}
     </div>
   );
 };

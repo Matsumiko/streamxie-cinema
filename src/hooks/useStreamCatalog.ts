@@ -57,6 +57,7 @@ const loadCatalog = async (): Promise<CatalogState> => {
 };
 
 export const useStreamCatalog = () => {
+  const [reloadToken, setReloadToken] = useState(0);
   const [state, setState] = useState<CatalogState>({
     ...emptyState,
     loading: true,
@@ -72,7 +73,13 @@ export const useStreamCatalog = () => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [reloadToken]);
 
-  return state;
+  const retry = () => {
+    cachedState = null;
+    setState({ ...emptyState, loading: true });
+    setReloadToken((current) => current + 1);
+  };
+
+  return { ...state, retry };
 };

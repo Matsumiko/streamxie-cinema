@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Info, Play, Star } from "@phosphor-icons/react";
+import { Info, Pause, Play, Star } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GenreChip } from "@/components/common/GenreChip";
 import { MediaPlaceholder } from "@/components/common/MediaPlaceholder";
@@ -16,11 +16,15 @@ type HeroBannerProps = {
 
 export const HeroBanner = ({ items, loading = false }: HeroBannerProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [userPaused, setUserPaused] = useState<boolean | null>(null);
+  const [hovered, setHovered] = useState(false);
+  const [focusWithin, setFocusWithin] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [progress, setProgress] = useState(0);
-  const intervalRef = useRef<number | null>(null);
   const progressRef = useRef<number | null>(null);
   const startTimeRef = useRef<number>(Date.now());
+
+  const isPaused = reducedMotion || userPaused === true || (userPaused === null && (hovered || focusWithin));
 
   const slides = items && items.length > 0 ? items.slice(0, 6) : [];
   const active = slides.length > 0 ? slides[activeIndex % slides.length] : null;
@@ -32,10 +36,20 @@ export const HeroBanner = ({ items, loading = false }: HeroBannerProps) => {
   };
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = () => setReducedMotion(mediaQuery.matches);
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  useEffect(() => {
     if (slides.length === 0) return;
-    if (paused) {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      if (progressRef.current) cancelAnimationFrame(progressRef.current);
+    if (isPaused) {
+      if (progressRef.current !== null) {
+        cancelAnimationFrame(progressRef.current);
+        progressRef.current = null;
+      }
       return;
     }
 
@@ -53,11 +67,13 @@ export const HeroBanner = ({ items, loading = false }: HeroBannerProps) => {
       progressRef.current = requestAnimationFrame(tick);
     };
 
-    progressRef.current = requestAnimationFrame(tick);
     return () => {
-      if (progressRef.current) cancelAnimationFrame(progressRef.current);
+      if (progressRef.current !== null) {
+        cancelAnimationFrame(progressRef.current);
+        progressRef.current = null;
+      }
     };
-  }, [paused, activeIndex, slides.length]);
+  }, [isPaused, activeIndex, slides.length]);
 
   useEffect(() => {
     if (slides.length > 0 && activeIndex >= slides.length) setActiveIndex(0);
@@ -105,17 +121,29 @@ export const HeroBanner = ({ items, loading = false }: HeroBannerProps) => {
   return (
     <section
       className="relative min-h-[90vh] overflow-hidden pt-[72px]"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={(event) => {
+        if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
+        setFocusWithin(true);
+      }}
+      onBlur={(event) => {
+        if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
+        setFocusWithin(false);
+      }}
+      aria-label="Featured titles"
     >
+      <p className="sr-only" aria-live="polite" aria-atomic="true">
+        Featured title {activeIndex + 1} of {slides.length}: {active.title}
+      </p>
       {/* Backdrop */}
       <AnimatePresence mode="wait">
         <motion.div
           key={active.id}
-          initial={{ opacity: 0, scale: 1.04 }}
+          initial={{ opacity: 0, scale: reducedMotion ? 1 : 1.04 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.85, ease: "easeInOut" }}
+          exit={{ opacity: 0, scale: reducedMotion ? 1 : 0.98 }}
+          transition={{ duration: reducedMotion ? 0 : 0.85, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           {active.heroImage ? (
@@ -138,10 +166,10 @@ export const HeroBanner = ({ items, loading = false }: HeroBannerProps) => {
         <AnimatePresence mode="wait">
           <motion.div
             key={`content-${active.id}`}
-            initial={{ opacity: 0, y: 32 }}
+            initial={{ opacity: 0, y: reducedMotion ? 0 : 32 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            exit={{ opacity: 0, y: reducedMotion ? 0 : -12 }}
+            transition={{ duration: reducedMotion ? 0 : 0.6, ease: "easeOut" }}
             className="max-w-2xl space-y-5"
           >
             {/* Badge */}
@@ -196,7 +224,7 @@ export const HeroBanner = ({ items, loading = false }: HeroBannerProps) => {
             </div>
 
             {/* CTA */}
-            <div className="flex flex-wrap gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <Link
                 to={`/watch/${active.id}`}
                 className="inline-flex min-h-[52px] items-center gap-3 rounded-xl bg-gradient-primary px-8 py-3 text-base font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:scale-[1.03] hover:shadow-primary/30 hover:brightness-110"
@@ -211,6 +239,16 @@ export const HeroBanner = ({ items, loading = false }: HeroBannerProps) => {
                 <Info size={20} weight="duotone" />
                 More Info
               </Link>
+              <button
+                type="button"
+                aria-label={isPaused ? "Play featured titles" : "Pause featured titles"}
+                aria-pressed={isPaused}
+                disabled={reducedMotion}
+                onClick={() => setUserPaused(isPaused ? false : true)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur-sm transition-colors hover:border-white/60 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isPaused ? <Play size={15} weight="fill" /> : <Pause size={15} weight="fill" />}
+              </button>
             </div>
 
             {/* Indikator slide dengan progress */}

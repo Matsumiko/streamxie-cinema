@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import { SectionHeader } from "@/components/common/SectionHeader";
@@ -17,11 +17,35 @@ export const ContentCarousel = ({
   viewAllHref = "/browse",
 }: ContentCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
+  const updateScrollState = useCallback(() => {
+    const element = scrollRef.current;
+    if (!element) return;
+    const maxScrollLeft = element.scrollWidth - element.clientWidth;
+    setCanScrollLeft(element.scrollLeft > 1);
+    setCanScrollRight(element.scrollLeft < maxScrollLeft - 1);
+  }, []);
+
+  useEffect(() => {
+    updateScrollState();
+    const element = scrollRef.current;
+    if (!element) return;
+    element.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    return () => {
+      element.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [children, updateScrollState]);
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
-    const amount = 480;
-    scrollRef.current.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
+    const amount = Math.max(scrollRef.current.clientWidth * 0.8, 320);
+    scrollRef.current.scrollBy({
+      left: dir === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -34,16 +58,20 @@ export const ContentCarousel = ({
             <button
               type="button"
               aria-label="Scroll left"
+              aria-disabled={!canScrollLeft}
+              disabled={!canScrollLeft}
               onClick={() => scroll("left")}
-              className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:border-primary hover:text-primary"
+              className="hidden h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40 sm:flex"
             >
               <CaretLeft size={16} weight="bold" />
             </button>
             <button
               type="button"
               aria-label="Scroll right"
+              aria-disabled={!canScrollRight}
+              disabled={!canScrollRight}
               onClick={() => scroll("right")}
-              className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:border-primary hover:text-primary"
+              className="hidden h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40 sm:flex"
             >
               <CaretRight size={16} weight="bold" />
             </button>

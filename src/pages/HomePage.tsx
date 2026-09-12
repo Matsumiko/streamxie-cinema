@@ -20,7 +20,7 @@ export const HomePage = ({
   onToggleList,
   progressMap,
 }: HomePageProps) => {
-  const { sections, items, loading, error } = useStreamCatalog();
+  const { sections, items, loading, error, retry } = useStreamCatalog();
   const featuredItems = items.slice(0, 6);
   const continueWatching = useMemo(
     () =>
@@ -43,8 +43,9 @@ export const HomePage = ({
           <EmptyState
             title="Live catalog unavailable"
             description={error ?? "TMDB did not return catalog data for this request."}
-            actionLabel="Browse"
-            actionHref="/browse"
+            actionLabel={error ? "Retry" : "Browse"}
+            actionHref={error ? undefined : "/browse"}
+            onAction={error ? retry : undefined}
           />
         ) : null}
 
