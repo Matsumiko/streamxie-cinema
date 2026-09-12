@@ -5,4 +5,4 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "AUTH_DB"
 database_name = "streamxie-auth"
-database_id = "a5913385-8333-415e-801d-4ea99f51e6c6"
+database_id = "48a91a1b-f6d5-4d3f-88da-20b58655e5fb"

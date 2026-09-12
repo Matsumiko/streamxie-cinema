@@ -10,13 +10,7 @@ import { getSearchHistory, saveSearchTerm } from "@/lib/storage";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStreamCatalog } from "@/hooks/useStreamCatalog";
-import {
-  fetchStreamxieFilterOptions,
-  getStreamSearchScopeLabel,
-  searchTmdbCatalog,
-  searchStreamCatalogByScope,
-  type StreamSearchScope,
-} from "@/lib/streamxie";
+import { searchTmdbCatalog } from "@/lib/streamxie";
 import type { ContentItem } from "@/types/content";
 
 type SearchPageProps = {
@@ -37,64 +31,33 @@ const sortLabels: Record<SortOption, string> = {
 export const SearchPage = ({ myList, onToggleList }: SearchPageProps) => {
   const [params, setParams] = useSearchParams();
   const initial = params.get("q") || "";
-  const scopeParam = params.get("scope");
-  const scope: StreamSearchScope = scopeParam === "streamxie1" || scopeParam === "streamxie2" || scopeParam === "streamxie3"
-    ? scopeParam
-    : "tmdb";
   const { items: catalogItems } = useStreamCatalog();
   const [query, setQuery] = useState(initial);
   const [loading, setLoading] = useState(false);
   const [liveResults, setLiveResults] = useState<ContentItem[] | null>(null);
-  const [scopeKeywords, setScopeKeywords] = useState<string[]>([]);
   const [activeGenres, setActiveGenres] = useState<string[]>([]);
   const [sort, setSort] = useState<SortOption>("relevance");
   const [showSortMenu, setShowSortMenu] = useState(false);
   const sortMenuRef = useRef<HTMLDivElement | null>(null);
-  const scopeLabel = getStreamSearchScopeLabel(scope);
+  const scopeLabel = "TMDB";
 
   useDocumentMeta(
-    `Search ${scopeLabel} | streamXie`,
-    `Search titles from ${scopeLabel} catalog.`,
+    "Search TMDB | streamXie",
+    "Search titles from TMDB catalog.",
   );
 
   const withScopeParams = (value: string) => {
     const nextParams = new URLSearchParams();
     const normalized = value.trim();
     if (normalized) nextParams.set("q", normalized);
-    if (scope !== "tmdb") nextParams.set("scope", scope);
     return nextParams;
   };
 
   const recent = getSearchHistory();
   const suggestedKeywords = useMemo(() => {
-    if (scope !== "tmdb") return scopeKeywords.slice(0, 12);
     const values = catalogItems.flatMap((item) => item.genres);
     return Array.from(new Set(values.filter(Boolean))).slice(0, 12);
-  }, [catalogItems, scope, scopeKeywords]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    if (scope === "tmdb") {
-      setScopeKeywords([]);
-      return () => {
-        mounted = false;
-      };
-    }
-
-    fetchStreamxieFilterOptions(scope)
-      .then((options) => {
-        if (!mounted) return;
-        setScopeKeywords(options.genres.map((entry) => entry.title));
-      })
-      .catch(() => {
-        if (mounted) setScopeKeywords([]);
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, [scope]);
+  }, [catalogItems]);
 
   useEffect(() => {
     let mounted = true;
@@ -103,15 +66,13 @@ export const SearchPage = ({ myList, onToggleList }: SearchPageProps) => {
     if (!normalized) {
       setLiveResults(null);
       setLoading(false);
-      return;
+      return () => {
+        mounted = false;
+      };
     }
 
     setLoading(true);
-    const searchPromise = scope === "tmdb"
-      ? searchTmdbCatalog(normalized)
-      : searchStreamCatalogByScope(normalized, scope);
-
-    searchPromise
+    searchTmdbCatalog(normalized)
       .then((items) => {
         if (mounted) setLiveResults(items);
       })
@@ -125,7 +86,8 @@ export const SearchPage = ({ myList, onToggleList }: SearchPageProps) => {
     return () => {
       mounted = false;
     };
-  }, [initial, scope]);
+  }, [initial]);
+
 
   useEffect(() => {
     if (!showSortMenu) return;

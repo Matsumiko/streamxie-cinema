@@ -31,6 +31,12 @@
   --color-info: 200 90% 60%;
   --color-info-foreground: 0 0% 100%;
   --color-surface: 220 15% 10%;
+  --color-category-movies: 196 64% 24%;
+  --color-category-series: 264 67% 35%;
+  --color-category-anime: 15 79% 34%;
+  --color-category-drama: 342 75% 30%;
+  --color-category-variety: 32 83% 26%;
+  --color-category-foreground: 0 0% 100%;
   --color-surface-foreground: 0 0% 98%;
   --color-gray-50: 220 15% 96%;
   --color-gray-100: 220 10% 90%;

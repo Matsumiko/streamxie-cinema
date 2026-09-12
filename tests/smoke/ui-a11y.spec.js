@@ -12,9 +12,6 @@ const ROUTES = [
   "/register",
   "/forgot-password",
   "/reset-password",
-  "/streamxie1",
-  "/streamxie2",
-  "/streamxie3",
 ];
 
 for (const route of ROUTES) {
@@ -297,22 +294,6 @@ test("mobile bottom navigation terdaftar sebagai landmark nav", async ({ page },
   await expect(bottomNav.getByRole("link", { name: "Search" })).toBeVisible();
 });
 
-test("search scope mobile tetap mempertahankan provider context", async ({ page }, testInfo) => {
-  test.skip(!testInfo.project.name.includes("mobile"), "Mobile-specific control");
-
-  const route = "/search?scope=streamxie1&q=avatar";
-  const response = await page.goto(route, { waitUntil: "domcontentloaded" });
-  expect(response, `Navigation should return a response for ${route}`).not.toBeNull();
-  expect(response?.status(), `Expected HTTP 200 for ${route}`).toBe(200);
-
-  const bottomNav = page.locator("nav[aria-label='Navigasi bawah']");
-  await expect(bottomNav).toBeVisible();
-
-  const searchLink = bottomNav.getByRole("link", { name: "Search" });
-  await expect(searchLink).toBeVisible();
-  await expect(searchLink).toHaveAttribute("href", "/search?scope=streamxie1");
-  await expect(searchLink).toHaveClass(/text-primary/);
-});
 
 test("detail synopsis and season controls have touch-friendly size", async ({ page }) => {
   const movieRoute = "/movie/tmdb--movie--1007757";
@@ -470,12 +451,6 @@ test("route kritikal memiliki heading level satu", async ({ page }) => {
     "/netflix-series",
     "/movie/tmdb--movie--1007757",
     "/series/tmdb--tv--202250",
-    "/streamxie1",
-    "/streamxie2",
-    "/streamxie3",
-    "/streamxie1/genre/drama",
-    "/streamxie2/section/latest",
-    "/streamxie3/year/2026",
   ];
 
   for (const route of routes) {
@@ -488,54 +463,6 @@ test("route kritikal memiliki heading level satu", async ({ page }) => {
   }
 });
 
-test("route genre streamxie2 yang upstream-nya gagal tetap punya heading spesifik", async ({ page }) => {
-  const route = "/streamxie2/genre/drama";
-  const response = await page.goto(route, { waitUntil: "domcontentloaded" });
-  expect(response, `Navigation should return a response for ${route}`).not.toBeNull();
-  expect(response?.status(), `Expected HTTP 200 for ${route}`).toBe(200);
-
-  const heading = page.locator("main h1").first();
-  await expect(heading).toContainText("Genre · Drama", { timeout: 15000 });
-  await expect(page.locator("main")).toContainText("Unable to load provider collection right now.", { timeout: 15000 });
-  await expect(page.locator("main")).not.toContainText("streamxie2 Collection");
-});
-
-test("dropdown genre streamxie2 hanya menampilkan opsi yang endpoint-nya sehat", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name.includes("mobile"), "Dropdown desktop provider");
-
-  const route = "/streamxie2";
-  const response = await page.goto(route, { waitUntil: "domcontentloaded" });
-  expect(response, `Navigation should return a response for ${route}`).not.toBeNull();
-  expect(response?.status(), `Expected HTTP 200 for ${route}`).toBe(200);
-
-  const genreSummary = page.locator("header details summary", { hasText: /^Genre$/ }).first();
-  await expect(genreSummary).toBeVisible();
-  await genreSummary.click();
-
-  const genreLinks = page.locator("details[open] a[href^='/streamxie2/genre/']");
-  await expect(genreLinks.first()).toBeVisible({ timeout: 15000 });
-  const visibleGenreTitles = (await genreLinks.allTextContents())
-    .map((text) => text.replace(/\d+\s*$/, "").trim())
-    .filter(Boolean);
-
-  expect(visibleGenreTitles).toContain("Comedy");
-  expect(visibleGenreTitles).not.toContain("Drama");
-  expect(visibleGenreTitles).not.toContain("Animation");
-  expect(visibleGenreTitles).not.toContain("Action");
-});
-
-test("route genre streamxie2 yang valid tetap memuat judul", async ({ page }) => {
-  const route = "/streamxie2/genre/comedy";
-  const response = await page.goto(route, { waitUntil: "domcontentloaded" });
-  expect(response, `Navigation should return a response for ${route}`).not.toBeNull();
-  expect(response?.status(), `Expected HTTP 200 for ${route}`).toBe(200);
-
-  await expect(page.locator("main h1").first()).toContainText("Genre · Comedy", { timeout: 15000 });
-  await expect(page.locator("main")).not.toContainText("Unable to load provider collection right now.");
-  await expect(page.locator("main a[href^='/movie/'], main a[href^='/series/']").first()).toBeVisible({
-    timeout: 15000,
-  });
-});
 
 test("badge PRO di profile memenuhi kontras minimum", async ({ page }) => {
   const route = "/profile";

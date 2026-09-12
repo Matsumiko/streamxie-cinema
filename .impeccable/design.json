@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-12T11:30:00.000Z",
+  "title": "Design System: streamXie",
+  "extensions": {
+    "colorMeta": {
+      "midnight-slate": { "role": "neutral", "displayName": "Midnight Slate", "canonical": "#0f1115", "tonalRamp": ["#0f1115", "#15181d", "#1b1e24", "#262a31", "#34383f", "#4b4f57", "#8b9099", "#fafafa"] },
+      "midnight-card": { "role": "neutral", "displayName": "Midnight Card", "canonical": "#1d2026", "tonalRamp": ["#121419", "#181b20", "#1d2026", "#292d34", "#3a3f47", "#555b65", "#9a9fa8", "#fafafa"] },
+      "signal-teal": { "role": "primary", "displayName": "Signal Teal", "canonical": "#17d1a0", "tonalRamp": ["#062b25", "#075541", "#087e60", "#0ca878", "#17d1a0", "#54e0bc", "#9aefda", "#e5fcf6"] },
+      "signal-teal-deep": { "role": "secondary", "displayName": "Deep Signal Teal", "canonical": "#1f7a63", "tonalRamp": ["#061d18", "#0c382d", "#145340", "#1f7a63", "#459c84", "#76bda9", "#acdace", "#e5f3ef"] },
+      "electric-cyan": { "role": "primary", "displayName": "Electric Cyan", "canonical": "#0bbde0", "tonalRamp": ["#04252c", "#064b59", "#08758a", "#099dbb", "#0bbde0", "#52d1e9", "#98e4f2", "#e1f8fc"] },
+      "slate-border": { "role": "neutral", "displayName": "Slate Border", "canonical": "#4b4f57", "tonalRamp": ["#17191d", "#24272d", "#34383f", "#4b4f57", "#666b74", "#858a93", "#b5b8be", "#f0f1f2"] },
+      "slate-muted": { "role": "neutral", "displayName": "Slate Muted", "canonical": "#34383f", "tonalRamp": ["#121418", "#202329", "#34383f", "#484d55", "#626771", "#858a93", "#b5b8be", "#f0f1f2"] },
+      "text-primary": { "role": "neutral", "displayName": "Primary White", "canonical": "#fafafa", "tonalRamp": ["#202020", "#3a3a3a", "#555555", "#707070", "#8b8b8b", "#b0b0b0", "#d6d6d6", "#fafafa"] },
+      "text-muted": { "role": "neutral", "displayName": "Muted White", "canonical": "#c7cad1", "tonalRamp": ["#1f2022", "#393b3f", "#54565b", "#6f7178", "#898c94", "#a4a7ae", "#c7cad1", "#f1f2f3"] },
+      "success-green": { "role": "tertiary", "displayName": "Success Green", "canonical": "#28bd70", "tonalRamp": ["#092a1a", "#105334", "#187b4b", "#209f60", "#28bd70", "#5dce92", "#9be2ba", "#e1f7eb"] },
+      "warning-amber": { "role": "tertiary", "displayName": "Warning Amber", "canonical": "#f2ad0d", "tonalRamp": ["#352500", "#694900", "#9d6d00", "#cd9005", "#f2ad0d", "#f6c34f", "#fad98e", "#fff3d6"] },
+      "error-red": { "role": "tertiary", "displayName": "Error Red", "canonical": "#fa3333", "tonalRamp": ["#3b0808", "#741010", "#ad1818", "#d72424", "#fa3333", "#fb6666", "#fd9999", "#ffe0e0"] },
+      "info-blue": { "role": "tertiary", "displayName": "Info Blue", "canonical": "#52b8f5", "tonalRamp": ["#082638", "#105070", "#187aa8", "#329bd0", "#52b8f5", "#80cbf7", "#afe0fa", "#e3f5fd"] },
+      "category-movies": { "role": "tertiary", "displayName": "Movies Slate", "canonical": "#164e63", "tonalRamp": ["#031015", "#08232d", "#0d3645", "#164e63", "#3d7183", "#729eaa", "#a9cbd2", "#e5f2f5"] },
+      "category-series": { "role": "tertiary", "displayName": "Series Violet", "canonical": "#4c1d95", "tonalRamp": ["#0f061e", "#251047", "#38166e", "#4c1d95", "#7650ae", "#a28ac7", "#cfc3e3", "#eeeaf6"] },
+      "category-anime": { "role": "tertiary", "displayName": "Anime Ember", "canonical": "#9a3412", "tonalRamp": ["#220b03", "#4d1908", "#732609", "#9a3412", "#b96243", "#d08e78", "#e5bab0", "#f7e5df"] },
+      "category-drama": { "role": "tertiary", "displayName": "Drama Berry", "canonical": "#881337", "tonalRamp": ["#1e030c", "#43091c", "#650e29", "#881337", "#ad4b6b", "#c98199", "#e0b0bf", "#f4e5e9"] },
+      "category-variety": { "role": "tertiary", "displayName": "Variety Ochre", "canonical": "#79450b", "tonalRamp": ["#1a0d02", "#3c2105", "#5b3208", "#79450b", "#a06d3b", "#bd956d", "#dbc0a1", "#f1e8dc"] },
+      "category-foreground": { "role": "neutral", "displayName": "Category White", "canonical": "#ffffff", "tonalRamp": ["#202020", "#3a3a3a", "#555555", "#707070", "#8b8b8b", "#b0b0b0", "#d6d6d6", "#ffffff"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "DM Sans Display", "purpose": "Hero headlines and high-emphasis media titles." },
+      "headline": { "displayName": "DM Sans Headline", "purpose": "Uppercase section headings and detail-page anchors." },
+      "body": { "displayName": "Inter Body", "purpose": "Descriptions, metadata, forms, and navigation." },
+      "label": { "displayName": "Inter Label", "purpose": "Short uppercase categories, badges, and system cues." },
+      "mono": { "displayName": "IBM Plex Mono", "purpose": "Technical or streaming status readouts." }
+    },
+    "shadows": [
+      { "name": "navigation-lift", "value": "0 1px 0 rgba(0, 0, 0, 0.05)", "purpose": "Subtle separation for the fixed header after the transparent hero state." },
+      { "name": "media-hover-glow", "value": "0 0 0 1px rgba(23, 209, 160, 0.4), 0 8px 32px rgba(23, 209, 160, 0.12)", "purpose": "Responsive emphasis on interactive media cards." },
+      { "name": "dialog-lift", "value": "0 10px 30px rgba(0, 0, 0, 0.24)", "purpose": "Focused overlay content above the page." }
+    ],
+    "motion": [
+      { "name": "cinematic", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for navigation, carousel, and media state transitions." },
+      { "name": "hero-transition", "value": "0.85s ease-in-out", "purpose": "Restrained fade and scale between hero slides." },
+      { "name": "card-transition", "value": "0.3s", "purpose": "Poster hover reveal, border, and glow response." },
+      { "name": "loader-cycle", "value": "1.45s / 2.9s / 4.35s", "purpose": "Nested streaming loader ring rotations." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Gradient action used for watching and other high-intent actions.",
+      "html": "<button class=\"ds-btn-primary\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 5v14l11-7z\" fill=\"currentColor\"/></svg>Watch Now</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 12px 32px; border: 0; border-radius: 12px; background: linear-gradient(135deg, #17d1a0 0%, #0bbde0 100%); color: #fff; font: 500 16px/24px Inter, sans-serif; cursor: pointer; transition: filter .2s ease, transform .2s ease, box-shadow .2s ease; } .ds-btn-primary svg { width: 20px; height: 20px; } .ds-btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(23, 209, 160, .2); } .ds-btn-primary:focus-visible { outline: 2px solid #17d1a0; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Translucent companion action used over cinematic imagery.",
+      "html": "<button class=\"ds-btn-secondary\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/><path d=\"M12 8v4l3 2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg>More Info</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 12px 32px; border: 1px solid rgba(255,255,255,.3); border-radius: 12px; background: rgba(255,255,255,.1); color: #fff; font: 500 16px/24px Inter, sans-serif; cursor: pointer; backdrop-filter: blur(8px); transition: background .2s ease, border-color .2s ease; } .ds-btn-secondary svg { width: 20px; height: 20px; } .ds-btn-secondary:hover { border-color: rgba(255,255,255,.6); background: rgba(255,255,255,.2); } .ds-btn-secondary:focus-visible { outline: 2px solid #17d1a0; outline-offset: 2px; }"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "Compact dark field for title, genre, cast, or keyword search.",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/><path d=\"m16 16 4 4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg><input placeholder=\"Search titles...\" /></label>",
+      "css": ".ds-search { display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 16px; border: 1px solid #4b4f57; border-radius: 8px; background: #1d2026; color: #c7cad1; } .ds-search svg { width: 16px; height: 16px; flex: 0 0 auto; } .ds-search input { width: 100%; border: 0; outline: 0; background: transparent; color: #fafafa; font: 400 14px/20px Inter, sans-serif; } .ds-search input::placeholder { color: #c7cad1; } .ds-search:focus-within { border-color: #17d1a0; box-shadow: 0 0 0 2px rgba(23,209,160,.2); }"
+    },
+    {
+      "name": "Media Card",
+      "kind": "card",
+      "refersTo": "card-media",
+      "description": "Rounded poster container with quiet border and responsive hover glow.",
+      "html": "<article class=\"ds-media-card\"><div class=\"ds-media-art\"></div><strong>Featured title</strong><small>★ 8.4 · 2026 · Drama</small></article>",
+      "css": ".ds-media-card { width: 180px; overflow: hidden; border: 1px solid #4b4f57; border-radius: 16px; background: #1d2026; color: #fafafa; font-family: Inter, sans-serif; transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease; } .ds-media-art { aspect-ratio: 2 / 3; background: radial-gradient(circle at 35% 20%, rgba(0,245,212,.2), transparent 38%), linear-gradient(135deg, #141a22, #060a0f); } .ds-media-card strong, .ds-media-card small { display: block; padding: 12px 12px 0; } .ds-media-card small { padding-top: 4px; padding-bottom: 12px; color: #c7cad1; font-size: 12px; } .ds-media-card:hover { border-color: rgba(23,209,160,.5); box-shadow: 0 0 0 1px rgba(23,209,160,.4), 0 8px 32px rgba(23,209,160,.12); transform: translateY(-2px); }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip-filter",
+      "description": "Pill-shaped category or genre selector with a clear active state.",
+      "html": "<button class=\"ds-chip\">Movies</button>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 12px; border: 1px solid #4b4f57; border-radius: 999px; background: #1d2026; color: #c7cad1; font: 500 12px/15px Inter, sans-serif; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; transition: border-color .2s ease, color .2s ease, background .2s ease; } .ds-chip:hover, .ds-chip:focus-visible, .ds-chip[aria-pressed=\"true\"] { border-color: #17d1a0; background: rgba(31,122,99,.3); color: #17d1a0; } .ds-chip:focus-visible { outline: 2px solid #17d1a0; outline-offset: 2px; }"
+    },
+    {
+      "name": "Navigation Bar",
+      "kind": "nav",
+      "refersTo": "button-ghost",
+      "description": "Fixed responsive header that shifts from transparent hero overlay to blurred dark chrome.",
+      "html": "<nav class=\"ds-nav\"><strong>streamXie</strong><div><a href=\"#\" aria-current=\"page\">Home</a><a href=\"#\">My List</a><button>Browse</button></div><button class=\"ds-nav-search\">Search titles...</button></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 64px; padding: 12px 48px; border-bottom: 1px solid rgba(75,79,87,.6); background: rgba(15,17,21,.95); color: #fafafa; font: 500 14px/20px Inter, sans-serif; backdrop-filter: blur(12px); } .ds-nav strong { font: 700 16px/20px \"DM Sans\", sans-serif; letter-spacing: .08em; } .ds-nav div { display: flex; gap: 4px; } .ds-nav a, .ds-nav button { padding: 10px 14px; border: 0; border-radius: 8px; background: transparent; color: #c7cad1; font: inherit; cursor: pointer; } .ds-nav a:hover, .ds-nav button:hover, .ds-nav a[aria-current=\"page\"] { color: #17d1a0; } .ds-nav-search { min-width: 180px !important; border: 1px solid #4b4f57 !important; background: rgba(29,32,38,.5) !important; text-align: left; font-size: 12px !important; } .ds-nav-search:focus-visible, .ds-nav a:focus-visible, .ds-nav button:focus-visible { outline: 2px solid #17d1a0; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Neon Cinema",
+    "overview": "streamXie is a dark, content-first streaming catalog shaped like a cinema after hours: large artwork carries the atmosphere, while teal and cyan signals guide the next action. The system is cinematic and confident rather than ornamental. Deep slate surfaces let posters, backdrops, ratings, and playback controls remain the visual authority.\n\nThe interface uses restrained chrome, compact metadata, and responsive glow to make discovery feel fast without becoming a dashboard. Motion is purposeful: hero transitions, poster hover reveals, carousel movement, and loading states reinforce the sense of a live streaming service. The confirmed guardrail is simple: neon accents are signals, never the background.",
+    "keyCharacteristics": ["Dark, media-first composition with deep slate tonal layering.", "Signal teal and electric cyan reserved for action, focus, progress, and active states.", "Rounded, tactile controls balanced by compact uppercase section labels.", "Responsive rails and touch-sized controls preserve discovery on small screens."],
+    "rules": [
+      { "name": "The Signal, Not Spray Rule", "body": "Teal and cyan identify an action or state; they do not fill large portions of a screen for decoration.", "section": "colors" },
+      { "name": "The Wide Label Rule", "body": "Uppercase tracking belongs to short labels and section heads; never apply it to paragraphs or long titles.", "section": "typography" },
+      { "name": "The Flat-at-Rest Rule", "body": "A card should read through tonal contrast and a border before it reads through a shadow.", "section": "elevation" }
+    ],
+    "dos": ["Do keep Midnight Slate as the dominant canvas and let media artwork provide most visual variety.", "Do use Signal Teal for active navigation, primary actions, focus, progress, and meaningful hover feedback.", "Do use responsive media rails, 16px gaps, and touch targets of at least 44px on mobile.", "Do preserve the DM Sans / Inter pairing and the uppercase, tracked treatment for short labels and section headings.", "Do use borders and tonal layering before shadows to establish hierarchy."],
+    "donts": ["Don't turn teal or cyan into large neon backgrounds or apply glow to every surface.", "Don't introduce a generic light SaaS dashboard treatment or white card grid that competes with the cinema-first identity.", "Don't use wide uppercase tracking for body copy, long titles, or user-entered text.", "Don't make shadows persistent and heavy when a tonal surface or border communicates the layer.", "Don't replace media-led composition with dense technical chrome or decorative controls."]
+  }
+}

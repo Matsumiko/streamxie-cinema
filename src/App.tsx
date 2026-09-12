@@ -35,17 +35,8 @@ const MyListPage = lazy(() =>
 const ProfilePage = lazy(() =>
   import("@/pages/ProfilePage").then((module) => ({ default: module.ProfilePage })),
 );
-const GenrePage = lazy(() =>
-  import("@/pages/GenrePage").then((module) => ({ default: module.GenrePage })),
-);
 const CollectionPage = lazy(() =>
   import("@/pages/CollectionPage").then((module) => ({ default: module.CollectionPage })),
-);
-const StreamxieProviderPage = lazy(() =>
-  import("@/pages/StreamxieProviderPage").then((module) => ({ default: module.StreamxieProviderPage })),
-);
-const StreamxieCollectionPage = lazy(() =>
-  import("@/pages/StreamxieCollectionPage").then((module) => ({ default: module.StreamxieCollectionPage })),
 );
 const StaticPage = lazy(() =>
   import("@/pages/StaticPage").then((module) => ({ default: module.StaticPage })),
@@ -159,36 +150,6 @@ const AppRoutes = () => {
               }
             />
             <Route
-              path="/streamxie1"
-              element={
-                <StreamxieProviderPage
-                  scope="streamxie1"
-                  myList={myList}
-                  onToggleList={handleToggleList}
-                />
-              }
-            />
-            <Route
-              path="/streamxie2"
-              element={
-                <StreamxieProviderPage
-                  scope="streamxie2"
-                  myList={myList}
-                  onToggleList={handleToggleList}
-                />
-              }
-            />
-            <Route
-              path="/streamxie3"
-              element={
-                <StreamxieProviderPage
-                  scope="streamxie3"
-                  myList={myList}
-                  onToggleList={handleToggleList}
-                />
-              }
-            />
-            <Route
               path="/movie/:slug"
               element={
                 <MovieDetailPage
@@ -227,19 +188,6 @@ const AppRoutes = () => {
               }
             />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route
-              path="/genre/:name"
-              element={<GenrePage myList={myList} onToggleList={handleToggleList} />}
-            />
-            <Route
-              path="/:scope/:collectionType/:collectionSlug"
-              element={
-                <StreamxieCollectionPage
-                  myList={myList}
-                  onToggleList={handleToggleList}
-                />
-              }
-            />
             <Route path="/privacy" element={<StaticPage page="privacy" />} />
             <Route path="/terms" element={<StaticPage page="terms" />} />
             <Route path="/cookies" element={<StaticPage page="cookies" />} />

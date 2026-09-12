@@ -1,8 +1,7 @@
-const UPSTREAM_ORIGIN = "https://api.streamxie.indevs.in";
 
-const ACTIVE_PROVIDERS = ["xie-1", "kacain-1", "kacain-3", "kacain-4"];
+const ACTIVE_PROVIDERS = ["xie-1"];
 const DIRECT_PROVIDERS = new Set(["xie-1"]);
-const UPSTREAM_PROVIDERS = new Set(["kacain-1", "kacain-3", "kacain-4"]);
+const UPSTREAM_PROVIDERS = new Set();
 
 const json = (payload, init = {}) =>
   new Response(JSON.stringify(payload), {
@@ -277,42 +276,6 @@ const handleXieOne = (segments) => {
   }
 };
 
-const handleUpstreamProvider = async (context, segments) => {
-  const token = context.env.FADZPIE_AUTH_BEARER;
-
-  if (!token) {
-    return json(
-      {
-        status: false,
-        error: "Upstream auth is not configured.",
-      },
-      { status: 500 },
-    );
-  }
-
-  const incomingUrl = new URL(context.request.url);
-  const upstreamUrl = new URL(`${UPSTREAM_ORIGIN}/api/${segments.join("/")}`);
-  upstreamUrl.search = incomingUrl.search;
-
-  const upstreamResponse = await fetch(upstreamUrl.toString(), {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      authorization: `Bearer ${token}`,
-    },
-  });
-
-  const headers = new Headers(upstreamResponse.headers);
-  headers.set("cache-control", cacheHeaderFor(segments));
-  headers.delete("set-cookie");
-  headers.delete("www-authenticate");
-
-  return new Response(upstreamResponse.body, {
-    status: upstreamResponse.status,
-    statusText: upstreamResponse.statusText,
-    headers,
-  });
-};
 
 const handleGet = async (context) => {
   const segments = getPathSegments(context.params.path);
@@ -323,16 +286,12 @@ const handleGet = async (context) => {
       service: "streamxie-proxy",
       providers: ACTIVE_PROVIDERS,
       directProviders: [...DIRECT_PROVIDERS],
-      upstreamProviders: [...UPSTREAM_PROVIDERS],
+      upstreamProviders: [],
     });
   }
 
   const provider = segments[0];
-  if (DIRECT_PROVIDERS.has(provider)) {
-    return handleXieOne(segments.slice(1));
-  }
-
-  if (!UPSTREAM_PROVIDERS.has(provider)) {
+  if (!DIRECT_PROVIDERS.has(provider)) {
     return json(
       {
         status: false,
@@ -343,7 +302,7 @@ const handleGet = async (context) => {
     );
   }
 
-  return handleUpstreamProvider(context, segments);
+  return handleXieOne(segments.slice(1));
 };
 
 export function onRequest(context) {

@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MagnifyingGlass, FilmStrip } from "@phosphor-icons/react";
 import {
   Dialog,
@@ -13,13 +13,7 @@ import { MediaPlaceholder } from "@/components/common/MediaPlaceholder";
 import { StreamingLoader } from "@/components/common/StreamingLoader";
 import { getSearchHistory, saveSearchTerm } from "@/lib/storage";
 import { useStreamCatalog } from "@/hooks/useStreamCatalog";
-import {
-  fetchStreamxieFilterOptions,
-  getStreamSearchScopeLabel,
-  getStreamxieScopeFromPath,
-  searchTmdbCatalog,
-  searchStreamCatalogByScope,
-} from "@/lib/streamxie";
+import { searchTmdbCatalog } from "@/lib/streamxie";
 import type { ContentItem } from "@/types/content";
 
 type CommandPaletteProps = {
@@ -32,29 +26,18 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
   const [recent, setRecent] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [liveResults, setLiveResults] = useState<ContentItem[]>([]);
-  const [scopeKeywords, setScopeKeywords] = useState<string[]>([]);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const wasOpenRef = useRef(false);
   const restoreTimerRef = useRef<number | null>(null);
   const { items: catalogItems } = useStreamCatalog();
-  const location = useLocation();
   const navigate = useNavigate();
-  const scope = getStreamxieScopeFromPath(location.pathname);
-  const scopeLabel = getStreamSearchScopeLabel(scope);
-  const withScopeQuery = (value: string) =>
-    scope === "tmdb"
-      ? value
-        ? `/search?q=${encodeURIComponent(value)}`
-        : "/search"
-      : value
-        ? `/search?scope=${scope}&q=${encodeURIComponent(value)}`
-        : `/search?scope=${scope}`;
+  const scopeLabel = "TMDB";
+  const withScopeQuery = (value: string) => value ? `/search?q=${encodeURIComponent(value)}` : "/search";
 
   const suggestedKeywords = useMemo(() => {
-    if (scope !== "tmdb") return scopeKeywords.slice(0, 8);
     const values = catalogItems.flatMap((item) => item.genres);
     return Array.from(new Set(values.filter(Boolean))).slice(0, 8);
-  }, [catalogItems, scope, scopeKeywords]);
+  }, [catalogItems]);
 
   useEffect(() => {
     setRecent(getSearchHistory());
@@ -89,27 +72,32 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
 
   useEffect(() => {
     let mounted = true;
+    const normalized = query.trim();
 
-    if (scope === "tmdb") {
-      setScopeKeywords([]);
+    if (!normalized) {
+      setLiveResults([]);
+      setLoading(false);
       return () => {
         mounted = false;
       };
     }
 
-    fetchStreamxieFilterOptions(scope)
-      .then((options) => {
-        if (!mounted) return;
-        setScopeKeywords(options.genres.map((entry) => entry.title));
+    setLoading(true);
+    searchTmdbCatalog(normalized)
+      .then((items) => {
+        if (mounted) setLiveResults(items);
       })
       .catch(() => {
-        if (mounted) setScopeKeywords([]);
+        if (mounted) setLiveResults([]);
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
       });
 
     return () => {
       mounted = false;
     };
-  }, [scope]);
+  }, [query]);
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -135,11 +123,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
     }
 
     setLoading(true);
-    const searchPromise = scope === "tmdb"
-      ? searchTmdbCatalog(normalized)
-      : searchStreamCatalogByScope(normalized, scope);
-
-    searchPromise
+    searchTmdbCatalog(normalized)
       .then((items) => {
         if (mounted) setLiveResults(items);
       })
@@ -153,7 +137,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
     return () => {
       mounted = false;
     };
-  }, [query, scope]);
+  }, [query]);
 
   const results = useMemo(() => {
     if (!query.trim()) return catalogItems.slice(0, 5);

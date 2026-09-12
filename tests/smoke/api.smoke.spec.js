@@ -32,8 +32,7 @@ test("core APIs respond with expected status and shape", async ({ request }, tes
   const healthRes = await request.get("/api/xie/health");
   expect(healthRes.status()).toBe(200);
   const health = await healthRes.json();
-  expect(Array.isArray(health.providers)).toBeTruthy();
-  expect(health.providers).toEqual(expect.arrayContaining(["xie-1", "kacain-1", "kacain-3", "kacain-4"]));
+  expect(health.providers).toEqual(["xie-1"]);
 
   const xieWatchRes = await request.get("/api/xie/xie-1/watch/movie/1007757");
   expect(xieWatchRes.status()).toBe(200);

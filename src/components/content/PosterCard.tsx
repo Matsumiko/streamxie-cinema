@@ -11,11 +11,11 @@ type PosterCardProps = {
 };
 
 const categoryColors: Record<string, string> = {
-  Movies: "bg-blue-500/80 text-white",
-  Series: "bg-violet-500/80 text-white",
-  Anime: "bg-orange-500/80 text-white",
-  Drama: "bg-rose-500/80 text-white",
-  Variety: "bg-amber-500/80 text-white",
+  Movies: "bg-category-movies text-category-foreground",
+  Series: "bg-category-series text-category-foreground",
+  Anime: "bg-category-anime text-category-foreground",
+  Drama: "bg-category-drama text-category-foreground",
+  Variety: "bg-category-variety text-category-foreground",
 };
 
 export const PosterCard = ({ item, inList, onToggleList }: PosterCardProps) => {
@@ -25,7 +25,7 @@ export const PosterCard = ({ item, inList, onToggleList }: PosterCardProps) => {
 
   return (
     <motion.div
-      whileHover={{ scale: 1.04 }}
+      whileHover={{ scale: 1.02, zIndex: 10 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
       className="group relative"
     >
@@ -43,18 +43,18 @@ export const PosterCard = ({ item, inList, onToggleList }: PosterCardProps) => {
         )}
 
         {/* Category badge */}
-        <span className={`absolute left-2.5 top-2.5 rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-sm ${badgeClass}`}>
+        <span className={`absolute left-2.5 top-2.5 rounded-md px-2 py-0.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm ${badgeClass}`}>
           {item.category}
         </span>
 
         {/* Dark overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100 [@media(hover:none)]:opacity-100 [@media(pointer:coarse)]:opacity-100" />
 
-        {/* Hover actions */}
-        <div className="absolute inset-x-0 bottom-0 flex translate-y-3 flex-col gap-2 p-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+        {/* Actions stay available to keyboard and touch users */}
+        <div className="absolute inset-x-0 bottom-0 flex translate-y-3 flex-col gap-2 p-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100 [@media(pointer:coarse)]:translate-y-0 [@media(pointer:coarse)]:opacity-100">
           <Link
             to={`/watch/${item.id}`}
-            className="flex min-h-[40px] items-center justify-center gap-2 rounded-lg bg-gradient-primary text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
+            className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-gradient-primary text-sm font-medium text-primary-foreground transition-all hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             onClick={(e) => e.stopPropagation()}
           >
             <Play size={15} weight="fill" />
@@ -63,7 +63,7 @@ export const PosterCard = ({ item, inList, onToggleList }: PosterCardProps) => {
           <div className="flex gap-2">
             <Link
               to={href}
-              className="flex flex-1 min-h-[36px] items-center justify-center rounded-lg bg-card/80 text-xs text-foreground backdrop-blur-sm transition-all hover:bg-card"
+              className="flex min-h-11 flex-1 items-center justify-center rounded-lg bg-card/80 text-xs text-foreground backdrop-blur-sm transition-all hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               onClick={(e) => e.stopPropagation()}
             >
               Details
